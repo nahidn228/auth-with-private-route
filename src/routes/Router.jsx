@@ -4,6 +4,7 @@ import Profile from "../components/Profile";
 import SignUp from "../components/SignUp";
 import Home from "../pages/Home";
 import Root from "./../layouts/Root";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +25,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile></Profile>,
+        element: <PrivateRoute> <Profile></Profile> </PrivateRoute>,
       },
     ],
   },
