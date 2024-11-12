@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -16,6 +18,8 @@ const Login = () => {
     signIn(email, password)
       .then((result) => {
         console.log(result.user);
+        e.target.reset();
+        navigate("/profile");
       })
       .catch((err) => {
         console.log("ERROR ", err.message);
