@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const SignUp = () => {
   const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleSignUp = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -17,6 +19,9 @@ const SignUp = () => {
     createUser(email, password)
       .then((result) => {
         console.log(result.user);
+        alert("Registration successful.");
+        e.target.reset();
+        navigate("/");
       })
       .catch((err) => {
         console.log("ERROR ", err.message);

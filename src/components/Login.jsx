@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Login = () => {
-  const { signIn } = useContext(AuthContext);
+  const { signIn, signInWithGoogle, signInWithGithub } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -18,7 +19,31 @@ const Login = () => {
     signIn(email, password)
       .then((result) => {
         console.log(result.user);
+        alert("Sign-in successful.");
         e.target.reset();
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log("ERROR ", err.message);
+      });
+  };
+
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        console.log(result.user);
+        alert("Sign-in with GOOGLE successful.");
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log("ERROR ", err.message);
+      });
+  };
+  const handleGithubSignIn = () => {
+    signInWithGithub()
+      .then((result) => {
+        console.log(result.user);
+        alert("Sign-in with Github successful.");
         navigate("/profile");
       })
       .catch((err) => {
@@ -71,16 +96,13 @@ const Login = () => {
               <button className="btn btn-primary">Login</button>
             </div>
             <div className="flex my-4 justify-around">
-              <button className="btn">
-                {" "}
-                <FcGoogle /> Google{" "}
+              <button onClick={handleGoogleSignIn} className="btn btn-ghost">
+                <FcGoogle /> Google
               </button>
-              <button className="btn">
-                {" "}
+              <button onClick={handleGithubSignIn} className="btn btn-ghost">
                 <FaGithub /> Github
               </button>
-              <button className="btn">
-                {" "}
+              <button className="btn btn-ghost">
                 <FaTwitter />
                 Twitter
               </button>
