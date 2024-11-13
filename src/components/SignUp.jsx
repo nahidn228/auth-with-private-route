@@ -1,10 +1,12 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const SignUp = () => {
+  const [error, setError] = useState("");
+
   const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleSignUp = (e) => {
@@ -14,6 +16,27 @@ const SignUp = () => {
     const password = e.target.password.value;
 
     console.log(name, email, password);
+
+    //Clear error message
+    setError("");
+
+    if (password.length < 6) {
+      setError("Password should be 6 character or longer");
+      return;
+    }
+
+
+    //give me a regex  in js to validate password that contains at least one uppercase and at least  one lowercase, at least one number, at least one spacial character
+    // Password RegX
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+    if(!passwordRegex.test(password)){
+      setError("Password should be at least 6 character or grater, and at least 1 uppercase, 1 lowercase, 1 number & 1 special character");
+      return;
+    }
+
+
 
     //Create user
     createUser(email, password)
@@ -25,6 +48,8 @@ const SignUp = () => {
       })
       .catch((err) => {
         console.log("ERROR ", err.message);
+        //Set error message
+        setError(err.message);
       });
   };
   return (
@@ -77,18 +102,21 @@ const SignUp = () => {
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-primary">Sign Up</button>
+              {error && (
+                <p className="text-sm text-red-600 font-medium text-center mt-1">
+                  {" "}
+                  {error}{" "}
+                </p>
+              )}
             </div>
             <div className="flex my-4 justify-around">
               <button className="btn">
-                {" "}
-                <FcGoogle /> Google{" "}
+                <FcGoogle /> Google
               </button>
               <button className="btn">
-                {" "}
                 <FaGithub /> Github
               </button>
               <button className="btn">
-                {" "}
                 <FaTwitter />
                 Twitter
               </button>
