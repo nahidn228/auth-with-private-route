@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
-import { FaGithub, FaTwitter } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGithub, FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const SignUp = () => {
   const [error, setError] = useState("");
+  const [showPass, setShowPass] = useState(false);
 
   const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -14,8 +15,9 @@ const SignUp = () => {
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const terms = e.target.terms.checked;
 
-    console.log(name, email, password);
+    console.log(name, email, password, terms);
 
     //Clear error message
     setError("");
@@ -25,18 +27,26 @@ const SignUp = () => {
       return;
     }
 
+    //Terms & Condition validation
 
-    //give me a regex  in js to validate password that contains at least one uppercase and at least  one lowercase, at least one number, at least one spacial character
-    // Password RegX
-
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-
-    if(!passwordRegex.test(password)){
-      setError("Password should be at least 6 character or grater, and at least 1 uppercase, 1 lowercase, 1 number & 1 special character");
+    if (!terms) {
+      setError("Please accept our terms & condition");
       return;
     }
 
+    //give me a regex  in js to validate password that contains at least one uppercase and at least  one lowercase, at least one number, at least one spacial character
 
+    // Password RegX
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+    // Password RegX validation
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password should be at least 6 character or grater, and at least 1 uppercase, 1 lowercase, 1 number & 1 special character"
+      );
+      return;
+    }
 
     //Create user
     createUser(email, password)
@@ -88,17 +98,33 @@ const SignUp = () => {
                 required
               />
             </div>
-            <div className="form-control">
+            <div className="form-control relative">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
               <input
-                type="password"
+                type={showPass ? "text" : "password"}
                 name="password"
                 placeholder="password"
-                className="input input-bordered"
+                className="input input-bordered "
                 required
               />
+              <button
+                onClick={() => setShowPass(!showPass)}
+                className="btn btn-xs absolute bottom-3 right-2"
+              >
+                {showPass ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+            <div className="form-control">
+              <label className="label cursor-pointer justify-start gap-2 items-center">
+                <input
+                  type="checkbox"
+                  name="terms"
+                  className="checkbox checkbox-xs"
+                />
+                <span className="label-text">Accept Our terms & condition</span>
+              </label>
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-primary">Sign Up</button>
