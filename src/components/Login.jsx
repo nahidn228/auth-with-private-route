@@ -1,13 +1,16 @@
-import { useContext } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { useContext, useRef } from "react";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
+import { auth } from "./../firebase/firebase.init";
 
 const Login = () => {
   const { signIn, signInWithGoogle, signInWithGithub } =
     useContext(AuthContext);
   const navigate = useNavigate();
+  const emailRef = useRef();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -51,6 +54,23 @@ const Login = () => {
       });
   };
 
+  const handleForgetPass = () => {
+    console.log(emailRef);
+    const email = emailRef.current.value;
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Password reset email sent!");
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        console.log(error.message);
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // ..
+      });
+  };
+
   return (
     <div className="hero  min-h-screen">
       <div className="hero-content flex-col lg:flex-row">
@@ -69,6 +89,7 @@ const Login = () => {
               </label>
               <input
                 type="email"
+                ref={emailRef}
                 placeholder="email"
                 name="email"
                 className="input input-bordered"
@@ -86,7 +107,7 @@ const Login = () => {
                 className="input input-bordered"
                 required
               />
-              <label className="label">
+              <label onClick={handleForgetPass} className="label">
                 <a href="#" className="label-text-alt link link-hover">
                   Forgot password?
                 </a>

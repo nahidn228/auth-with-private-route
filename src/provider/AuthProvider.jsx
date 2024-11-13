@@ -2,13 +2,13 @@
 
 import {
   createUserWithEmailAndPassword,
+  GithubAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { GithubAuthProvider } from "firebase/auth";
 
 import { createContext, useEffect, useState } from "react";
 import { auth } from "./../firebase/firebase.init";
@@ -65,6 +65,7 @@ const AuthProvider = ({ children }) => {
     signInWithGoogle,
     signInWithGithub,
     loading,
+
     signOutUser,
   };
   return (

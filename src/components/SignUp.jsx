@@ -10,6 +10,12 @@ const SignUp = () => {
 
   const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // const handleTerms = (e) => {
+  //   const terms = e.target.terms.checked;
+  //   setSignUpBtn(false);
+  // };
+
   const handleSignUp = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -110,6 +116,7 @@ const SignUp = () => {
                 required
               />
               <button
+                type="button"
                 onClick={() => setShowPass(!showPass)}
                 className="btn btn-xs absolute bottom-3 right-2"
               >
@@ -127,7 +134,7 @@ const SignUp = () => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Sign Up</button>
+              <button className="btn btn-primary ">Sign Up</button>
               {error && (
                 <p className="text-sm text-red-600 font-medium text-center mt-1">
                   {" "}
